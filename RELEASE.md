@@ -34,6 +34,8 @@
     (TFX 0.14.0) as the base image.
 *   Allow users to specify the region to use when serving with for AI Platform.
 *   Allow users to give deterministic job id to AI Platform Training job.
+*   Fixed loading trainer and transformation functions from python module files
+    without the .py extension.
 
 ### Deprecations
 
