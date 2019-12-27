@@ -141,8 +141,7 @@ class BaseDriver(object):
       if not artifacts:
         raise RuntimeError('Channel-based input resolution is not supported.')
       result[name] = self._metadata_handler.search_artifacts(
-          artifacts[0].name, pipeline_info.pipeline_name, pipeline_info.run_id,
-          artifacts[0].producer_component)
+          artifacts[0].name, pipeline_info, artifacts[0].producer_component)
     return result
 
   def resolve_exec_properties(
@@ -207,13 +206,13 @@ class BaseDriver(object):
     Returns:
       the id of the upcoming execution
     """
-    run_context_id = self._metadata_handler.register_run_context_if_not_exists(
-        pipeline_info)
+    contexts = self._metadata_handler.register_contexts_if_not_exists(
+        pipeline_info, component_info)
     execution_id = self._metadata_handler.register_execution(
         exec_properties=exec_properties,
         pipeline_info=pipeline_info,
         component_info=component_info,
-        run_context_id=run_context_id)
+        contexts=contexts)
     absl.logging.debug('Execution id of the upcoming component execution is %s',
                        execution_id)
     return execution_id
