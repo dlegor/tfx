@@ -37,6 +37,7 @@
 *   System-managed artifact properties ("name", "state", "pipeline_name" and
     "producer_component") are now stored as ML Metadata artifact custom
     properties.
+*   Fix some ill-formed visualization when running on KFP.
 
 ### Deprecations
 
