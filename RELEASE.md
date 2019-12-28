@@ -23,13 +23,13 @@
 
 *   CSVExampleGen: started using the CSV decoding utilities in `tfx-bsl`
     (`tfx-bsl>=0.15.2`)
-*   Fix problems with Airflow tutorial notebooks
+*   Fixed problems with Airflow tutorial notebooks
 *   Performance improvements for the Transform Component (for its statistics
     generation).
 *   Depended on `pyarrow>=0.14,<0.15`.
-*   Raise exceptions when container building fails.
+*   Raised exceptions when container building fails.
 *   Enhanced custom slack component by adding a kubeflow example.
-*   Allow windows style paths in Transform component cache.
+*   Allowed windows style paths in Transform component cache.
 *   Fixed bug in CLI (--engine=kubeflow) which uses hard coded obslete image
     (TFX 0.14.0) as the base image.
 *   Allow users to specify the region to use when serving with for AI Platform.
@@ -37,6 +37,8 @@
 *   System-managed artifact properties ("name", "state", "pipeline_name" and
     "producer_component") are now stored as ML Metadata artifact custom
     properties.
+*   Removed system info from artifact properties and use channels to hold info
+    for generating MLMD queries.
 
 ### Deprecations
 

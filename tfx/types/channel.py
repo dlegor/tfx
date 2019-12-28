@@ -24,6 +24,22 @@ from tfx.types.artifact import Artifact
 from tfx.utils import json_utils
 
 
+class ChannelProducerInfo(json_utils.Jsonable):
+  """A class to hold producer related information.
+
+  This class serves as one of the main sources for downstream nodes to generate
+  proper MLMD queries (API calls) to fetch desired artifacts.
+
+  Attributes:
+    producer_component_id: the component if of the producer component
+    producer_key: the output key of the produced artifacts
+  """
+
+  def __init__(self, producer_component_id: Text, producer_key: Text):
+    self.producer_component_id = producer_component_id
+    self.producer_key = producer_key
+
+
 class Channel(json_utils.Jsonable):
   """Tfx Channel.
 
@@ -41,7 +57,8 @@ class Channel(json_utils.Jsonable):
       self,
       type_name: Optional[Text] = None,
       type: Optional[Type[Artifact]] = None,  # pylint: disable=redefined-builtin
-      artifacts: Optional[Iterable[Artifact]] = None):
+      artifacts: Optional[Iterable[Artifact]] = None,
+      producer_info: Optional[ChannelProducerInfo] = None):
     """Initialization of Channel.
 
     Args:
@@ -51,6 +68,9 @@ class Channel(json_utils.Jsonable):
         specified, "type_name" must be specified instead.
       artifacts: (Optional) A collection of artifacts as the values that can be
         read from the Channel. This is used to construct a static Channel.
+      producer_info: (Optional) Holds the producer component info of the
+        channel. This will be consumed by downstream component to assemble MLMD
+        query to fetch the desired artifacts.
     """
     if bool(type_name) == bool(type):
       raise ValueError(
@@ -66,6 +86,8 @@ class Channel(json_utils.Jsonable):
     self.type_name = type_name
     self._artifacts = artifacts or []
     self._validate_type()
+    # This will be populated during compilation time
+    self.producer_info = producer_info
 
   def __repr__(self):
     artifacts_str = '\n    '.join(repr(a) for a in self._artifacts)

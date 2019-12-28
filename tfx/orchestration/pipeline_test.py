@@ -199,16 +199,15 @@ class PipelineTest(tf.test.TestCase):
     expected_artifact.pipeline_timestamp_ms = 0
     expected_artifact.producer_component = 'component_a'
     self.assertCountEqual(my_pipeline.components, [component_a, component_b])
-    self.assertEqual(component_a.outputs['one']._artifacts[0].pipeline_name,
-                     'a')
     self.assertEqual(
-        component_a.outputs['one']._artifacts[0].producer_component,
+        component_a.outputs['one'].producer_info.producer_component_id,
         component_a.id)
-    self.assertEqual(component_a.outputs['one']._artifacts[0].name, 'one')
-    self.assertEqual(component_b.inputs['a']._artifacts[0].pipeline_name, 'a')
-    self.assertEqual(component_b.inputs['a']._artifacts[0].producer_component,
-                     component_a.id)
-    self.assertEqual(component_b.inputs['a']._artifacts[0].name, 'one')
+    self.assertEqual(component_a.outputs['one'].producer_info.producer_key,
+                     'one')
+    self.assertEqual(
+        component_b.inputs['a'].producer_info.producer_component_id,
+        component_a.id)
+    self.assertEqual(component_b.inputs['a'].producer_info.producer_key, 'one')
 
   def testPipelineSavePipelineArgs(self):
     os.environ['TFX_JSON_EXPORT_PIPELINE_ARGS_PATH'] = self._tmp_file
